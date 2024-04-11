@@ -204,9 +204,9 @@ for turn in range(1, k+1) :  # k번 반복
     # 4. 포탑 정비 - 무관한 포탑의 공격력 +1
     for x, y in alive_walls - set(min_routes) :
         walls[x][y] += 1
-    # print(walls)
-    # print(alive_walls)
-    # print(min_routes)
+        
+    if len(alive_walls) == 1 :
+        break
 
 # 가장 강한 포탑의 공격력 출력
 max_attack = 0
