@@ -18,7 +18,7 @@ def bfs(x, y, routes) :
 
         if node_x == end_x and node_y == end_y :
             min_routes_cnt = len(min_routes)
-            min_routes = routes[:]
+            min_routes = routes
             return
 
         for i in range(4) :
