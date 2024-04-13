@@ -18,7 +18,7 @@ def bfs(x, y, routes) :
 
         if node_x == end_x and node_y == end_y :
             min_routes_cnt = len(min_routes)
-            min_routes = routes
+            min_routes = routes[:]
             return
 
         for i in range(4) :
@@ -26,55 +26,6 @@ def bfs(x, y, routes) :
             ny = (node_y + dy[i]) % m
             if walls[nx][ny] > 0 :
                 queue.append((nx, ny, routes+[(nx, ny)]))
-
-def dfs(x, y, routes, visited):
-    global min_route_cnt, min_routes
-
-    # 이미 최단 경로가 아닌 경우 - 백트래킹
-    if len(routes) >= min_route_cnt:
-        return
-
-    # 정답 체크
-    if x == end_x and y == end_y:
-        min_route_cnt = len(routes)
-        min_routes = routes
-
-    visited[x][y] = True
-
-    # 우
-    if y + 1 > m - 1 and walls[x][0] > 0 and visited[x][0] == False:
-        dfs(x, 0, routes + [(x, 0)], visited)
-        visited[x][0] = False
-
-    elif y + 1 <= m - 1 and walls[x][y + 1] > 0 and visited[x][y + 1] == False:
-        dfs(x, y + 1, routes + [(x, y + 1)], visited)
-        visited[x][y + 1] = False
-
-    # 하
-    if x + 1 > n - 1 and walls[0][y] > 0 and visited[0][y] == False:
-        dfs(0, y, routes + [(0, y)], visited)
-        visited[0][y] = False
-
-    elif x + 1 <= n - 1 and walls[x + 1][y] > 0 and visited[x + 1][y] == False:
-        dfs(x + 1, y, routes + [(x + 1, y)], visited)
-        visited[x + 1][y] = False
-
-    # 좌
-    if y - 1 < 0 and walls[x][m - 1] > 0 and visited[x][m - 1] == False:
-        dfs(x, m - 1, routes + [(x, m - 1)], visited)
-        visited[x][m - 1] = False
-    elif y - 1 >= 0 and walls[x][y - 1] > 0 and visited[x][y - 1] == False:
-        dfs(x, y - 1, routes + [(x, y - 1)], visited)
-        visited[x][y - 1] = False
-    # 상
-    if x - 1 < 0 and walls[n - 1][y] > 0 and visited[n - 1][y] == False:
-        dfs(n - 1, y, routes + [(n - 1, y)], visited)
-        visited[n - 1][y] = False
-
-    elif x - 1 >= 0 and walls[x - 1][y] > 0 and visited[x - 1][y] == False:
-        dfs(x - 1, y, routes + [(x - 1, y)], visited)
-        visited[x - 1][y] = False
-
 
 def attack_surrounds(start_x, start_y, end_x, end_y, walls, half_attack, n, m, alive_walls):
     global min_routes
@@ -179,6 +130,7 @@ def attack_surrounds(start_x, start_y, end_x, end_y, walls, half_attack, n, m, a
 
 import heapq
 from sys import stdin
+stdin = open('input.txt', 'rt')
 n, m, k = map(int, stdin.readline().split())  # n = 행, m = 열, k = 반복 회수
 handicap = n + m
 walls = [list(map(int, stdin.readline().split())) for _ in range(n)]
@@ -206,7 +158,7 @@ for turn in range(1, k + 1):  # k번 반복
     min_route_cnt = n * m + 1
     min_routes = []
     bfs(start_x, start_y, [(start_x, start_y)])
-    # dfs(start_x, start_y, [(start_x, start_y)], visited)
+    
     if min_routes != []:  # 레이저 공격이 가능한 경우, 피해 업데이트 및 살아남은 포탑 업데이트
         walls[end_x][end_y] -= walls[start_x][start_y]
         half_attack = walls[start_x][start_y] // 2
