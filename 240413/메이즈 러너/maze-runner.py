@@ -25,7 +25,12 @@ def make_nemo(min_idx, min_dist) :
             else :
                 diff = x
                 square = [(x-diff, small_y), (x-diff, big_y), (x+min_dist-diff, small_y), (x+min_dist-diff, big_y)]
+        else :
+            small_x, big_x = min(x, exit_x), max(x, exit_x)
+            small_y, big_y = min(y, exit_y), max(y, exit_y)
+            square = [(small_x, small_y), (small_x, big_y), (big_x, small_y), (big_x, big_y)]
         square_list.append(square)
+
     square_list.sort(key = lambda x:(x[0][0], x[0][1]))
     return square_list[0]
 
@@ -51,7 +56,6 @@ for idx, [x,y] in enumerate(people) :
     dist[idx] = abs(exit_x - (x-1)) + abs(exit_y - (y-1))
 
 for second in range(1, k+1) :
-    # print('턴: ', second)
 
     # 1. 참가자의 이동
     delete_list = []
@@ -90,11 +94,10 @@ for second in range(1, k+1) :
         del dist[idx]
         del people[idx]
 
-    # print('dist ',dist)
     if people == [] :
         break
-
     # 2. 출구와 참가자를 포함한 정사각형 구하기
+
     min_dist = min(dist)
     min_idx = []
     for idx, value in enumerate(dist) :
@@ -113,7 +116,6 @@ for second in range(1, k+1) :
     for idx, [x,y] in enumerate(people) :
         if small_x <= x <= big_x and small_y <= y <= big_y :
             people[idx] = update(x, y, small_x, small_y, min_dist)
-
 
     # 2) 정사각형 내부 회전 및 값 -1
     cnt = small_x
@@ -135,9 +137,9 @@ for second in range(1, k+1) :
     for idx in range(len(dist)) :
         x, y = people[idx]
         dist[idx] = abs(exit_x-x) + abs(exit_y-y)
-    # print('최종 people ', people)
-    # print('최종 미로 ', miro)
-    # print('최종 exit ', exit_x, exit_y)
+#     print('최종 people ', people)
+#     print('최종 미로 ', miro)
+#     print('최종 exit ', exit_x, exit_y)
 
 print(moving_count)
 print(f'{exit_x+1} {exit_y+1}')
