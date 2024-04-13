@@ -9,22 +9,26 @@ def make_alive_walls(walls, n, m):
 
 def bfs(x, y, routes) :
     global min_route_cnt, min_routes
+    visited = [[False] * m for _ in range(n)]
     queue = deque([])
     queue.append((x, y, routes))
+    visited[x][y]= True
     dx = [0, 1, 0, -1]
     dy = [1, 0, -1, 0]
     while queue :
         node_x, node_y, routes = queue.popleft()
 
         if node_x == end_x and node_y == end_y :
-            min_routes_cnt = len(min_routes)
-            min_routes = routes[:]
+            if len(routes) < min_route_cnt :
+                min_route_cnt = len(min_routes)
+                min_routes = routes[:]
             return
 
         for i in range(4) :
             nx = (node_x + dx[i]) % n
             ny = (node_y + dy[i]) % m
-            if walls[nx][ny] > 0 :
+            if walls[nx][ny] > 0 and not visited[nx][ny] :
+                visited[node_x][node_y] = True
                 queue.append((nx, ny, routes+[(nx, ny)]))
 
 def attack_surrounds(start_x, start_y, end_x, end_y, walls, half_attack, n, m, alive_walls):
