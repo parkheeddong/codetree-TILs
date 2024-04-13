@@ -154,11 +154,10 @@ for turn in range(1, k + 1):  # k번 반복
     walls[start_x][start_y] += handicap
     turns[start_x][start_y] = turn
     # 3. 레이저 공격
-    visited = [[False] * m for _ in range(n)]
     min_route_cnt = n * m + 1
     min_routes = []
     bfs(start_x, start_y, [(start_x, start_y)])
-    
+
     if min_routes != []:  # 레이저 공격이 가능한 경우, 피해 업데이트 및 살아남은 포탑 업데이트
         walls[end_x][end_y] -= walls[start_x][start_y]
         half_attack = walls[start_x][start_y] // 2
