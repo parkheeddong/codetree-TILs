@@ -130,7 +130,6 @@ def attack_surrounds(start_x, start_y, end_x, end_y, walls, half_attack, n, m, a
 
 import heapq
 from sys import stdin
-stdin = open('input.txt', 'rt')
 n, m, k = map(int, stdin.readline().split())  # n = 행, m = 열, k = 반복 회수
 handicap = n + m
 walls = [list(map(int, stdin.readline().split())) for _ in range(n)]
